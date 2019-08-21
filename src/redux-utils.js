@@ -12,15 +12,13 @@ const createStore = (rootReducer, preloadedState) => {
   };
 };
 
-const combineReducers = reducers => (state, action) =>
+const combineReducers = reducers => (state = {}, action) =>
   Object.entries(reducers).reduce(
-    (outState, [reducerName, reducer]) => ({
-      ...outState,
-      [reducerName]: {
-        ...reducer(outState && outState[reducerName], action),
-      },
+    (newState, [reducerName, reducer]) => ({
+      ...newState,
+      [reducerName]: reducer(state[reducerName], action),
     }),
-    state,
+    {},
   );
 
 const handleActions = (actions, initialState) => (
