@@ -1,13 +1,22 @@
 const createStore = (rootReducer, preloadedState) => {
   let state = rootReducer(preloadedState, {});
+  let subscribers = [];
+
+  const subscribe = sub => {
+    subscribers.push(sub);
+    return () => {
+      subscribers = subscribers.filter(s => s !== sub);
+    };
+  };
+
   const dispatch = action => {
     state = rootReducer(state, action);
+    subscribers.forEach(s => s());
   };
 
   return {
-    get state() {
-      return state;
-    },
+    getState: () => state,
+    subscribe,
     dispatch,
   };
 };

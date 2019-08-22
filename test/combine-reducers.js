@@ -2,7 +2,7 @@ const { uiReducer, itemReducer } = require('../src/reducers');
 const { createStore, combineReducers } = require('../src/redux-utils');
 const { deepEqual } = require('assert');
 const withThese = require('mocha-each');
-const { testCases } = require('./test-cases');
+const { testCases } = require('./combine-reducers-cases');
 
 const rootReducer = combineReducers({
   ui: uiReducer,
@@ -15,7 +15,7 @@ describe('combineReducers', () => {
     (state, action, expected) => {
       const store = createStore(rootReducer, state);
       store.dispatch(action);
-      deepEqual(store.state, expected);
+      deepEqual(store.getState(), expected);
     },
   );
 });
