@@ -14,8 +14,10 @@ const createStore = (rootReducer, preloadedState) => {
     subscribers.forEach(s => s());
   };
 
+  const getState = () => state;
+
   return {
-    getState: () => state,
+    getState,
     subscribe,
     dispatch,
   };
@@ -34,9 +36,7 @@ const handleActions = (actions, initialState) => (
   state = initialState,
   action,
 ) => {
-  const actionReducerMap = new Map(Object.entries(actions));
-  const reducer = actionReducerMap.get(action.type);
-
+  const reducer = actions[action.type];
   return reducer ? reducer(state, action) : state;
 };
 
